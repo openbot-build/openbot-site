@@ -1,0 +1,25 @@
+{
+	"name": "@openbot-build/site",
+	"version": "0.1.0",
+	"private": true,
+	"license": "AGPL-3.0-only",
+	"type": "module",
+	"description": "The public OpenBot website",
+	"packageManager": "pnpm@9.15.9",
+	"scripts": {
+		"dev": "astro dev",
+		"build": "astro build",
+		"preview": "astro preview",
+		"typecheck": "astro sync && tsc --noEmit",
+		"check:site": "node scripts/check-build.mjs"
+	},
+	"dependencies": {
+		"@fontsource-variable/dm-sans": "5.3.0",
+		"@fontsource-variable/geist": "5.3.0",
+		"astro": "7.4.1"
+	},
+	"devDependencies": {
+		"@types/node": "26.6.5",
+		"typescript": "7.0.2"
+	}
+}
