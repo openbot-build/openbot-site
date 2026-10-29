@@ -1,0 +1,74 @@
+---
+import { ArrowRight, CalendarDays, Check, Clock3, Database, GitBranch, GraduationCap, Link, LoaderCircle, Mail, MessagesSquare, Package, Send, Shield, Terminal, History } from "@lucide/astro"
+interface Props { kind: string; steps: readonly string[]; title: string }
+const { kind, steps, title } = Astro.props
+---
+<div class:list={["scenario-process", `process-${kind}`]} data-process={kind}>
+ {kind === "channel" && <>
+  <div class="inbox-stream" data-at="700" hidden>
+   <header><MessagesSquare size={20}/>Slack · #support</header>
+   <div class="ticket-inbox" dir="ltr">{Array.from({length:12}, (_,i) => <span class:list={["inbox-ticket", {urgent:[0,3,6].includes(i)}]} data-at={1100+i*120} hidden>#{1041+i}</span>)}</div>
+   <p data-at="3100" hidden>{steps[0]}</p>
+   <div class="dispatch-queue" dir="ltr">{[['1041','Mia · API'],['1044','Leo · UI'],['1047','Mia · API']].map(([id,owner],i)=><div data-at={4300+i*1100} hidden><span>#{id}</span><span class="receipt-tag">P1</span><ArrowRight size={17}/><strong>{owner}</strong><Check size={18}/></div>)}</div>
+  </div>
+  <p class="process-note" data-at="7900" hidden>{steps[1]}</p>
+ </>}
+ {kind === "purchase" && <>
+  <div class="stock-sheet" data-at="900" hidden>
+   <header><Package size={22}/><strong>SKU-203</strong></header>
+   <div class="stock-calculation" dir="ltr"><span data-at="1600" hidden>20</span><span data-at="2600" hidden>− 8</span><strong data-at="3900" hidden>= 12</strong></div>
+   <p data-at="3900" hidden>{steps[0]}</p>
+  </div>
+  <div class="order-write" data-at="5700" hidden>
+   <div dir="ltr"><Database size={22}/><ArrowRight size={18}/><strong>PO-203</strong><span>SKU-203 × 12</span></div>
+   <span class="process-busy" data-until="7900"><LoaderCircle size={19}/></span>
+   <p data-at="7900" hidden><Check size={19}/>{steps[1]}</p>
+  </div>
+  <div class="process-destination" data-at="9200" hidden><Send size={19}/>Lark</div>
+ </>}
+ {kind === "share" && <>
+  <div class="teaching-role" data-at="800" hidden><GraduationCap size={30}/><h3>{title}</h3><p>{steps[0]}</p></div>
+  <div class="invite-transfer" data-at="2600" hidden>
+   <Link size={24}/><ArrowRight size={20}/><div><Mail size={24}/><bdi>teacher@example.com</bdi></div>
+  </div>
+  <div class="invitation-state" data-at="4600" hidden><Clock3 size={23}/><p>{steps[1]}</p></div>
+  <div class="privacy-pair" data-at="5600" hidden><span><Shield size={19}/>Bot</span><span><Shield size={19}/><bdi>teacher@example.com</bdi></span></div>
+ </>}
+ {kind === "calendar" && <>
+  <p class="memory-note" data-at="900" hidden><History size={22}/>{steps[0]}</p>
+  <div class="planning-days" data-at="2900" hidden dir="ltr">
+   {[['01','10:00','Colosseo'],['02','10:30','Pantheon'],['03','10:00','Villa Borghese']].map(([day,time,place],i)=><div class="planning-day">
+    <strong>{day}</strong><div class="day-booking" data-at={3400+i*1800} hidden><time>{time}</time><span>{place}</span><CalendarDays size={18}/></div>
+    <div class="day-rest" data-at={4300+i*1800} hidden><Clock3 size={17}/><time>13:00 — 16:00</time></div>
+   </div>)}
+  </div>
+  <p class="process-note" data-at="9400" hidden>{steps[1]}</p>
+  <div class="process-destination" data-at="10700" hidden><CalendarDays size={19}/><ArrowRight size={18}/><Send size={19}/>Telegram</div>
+ </>}
+ {kind === "schedule" && <>
+  <p class="process-note" data-at="800" hidden>{steps[0]}</p>
+  <div class="trigger-rail" data-at="2100" hidden dir="ltr">
+   {['D − 7','D − 3','D'].map((day,i)=><div data-at={2300+i*1300} hidden><Clock3 size={22}/><strong>{day}</strong><time>09:00</time><span data-at={3000+i*1300} hidden><Check size={18}/></span></div>)}
+  </div>
+  <div class="trigger-zone" data-at="6200" hidden><Clock3 size={18}/><span data-timezone></span><Send size={18}/>Telegram</div>
+  <p class="process-note" data-at="7100" hidden>{steps[1]}</p>
+ </>}
+ {kind === "crm" && <>
+  <div class="opportunity" data-at="800" hidden><header><Database size={23}/><strong>OPP-204</strong><span>Alex Chen</span></header><p data-at="2000" hidden>{steps[0]}</p></div>
+  <div class="sales-chain">
+   <div data-at="3700" hidden><Database size={23}/><strong>CRM</strong><span>OPP-204</span><Check size={18}/></div>
+   <div data-at="5400" hidden><CalendarDays size={23}/><strong>10:00 — 10:30</strong><Check size={18}/></div>
+  </div>
+  <p class="process-note" data-at="6900" hidden>{steps[1]}</p>
+  <div class="outgoing-mail" data-at="8200" hidden><Mail size={23}/><span>Alex Chen</span><LoaderCircle class="process-busy" size={20} data-until="9900"/><Check size={20} data-at="9900" hidden/></div>
+ </>}
+ {kind === "computer" && <>
+  <p class="process-note" data-at="700" hidden>{steps[0]}</p>
+  <div class="parallel-jobs" data-at="2000" hidden dir="ltr">
+   <div class="job"><header><GitBranch size={20}/><strong>API</strong></header><div class="test-count"><span data-until="4200">0 / 18</span><span data-at="4200" data-until="6900" hidden>8 / 18</span><span data-at="6900" data-until="9600" hidden>15 / 18</span><span data-at="9600" hidden><Check size={19}/>18 / 18</span></div><code>src/api.ts</code></div>
+   <div class="job"><header><GitBranch size={20}/><strong>UI</strong></header><div class="test-count"><span data-until="3500">0 / 10</span><span data-at="3500" data-until="5700" hidden>6 / 10</span><span data-at="5700" hidden><Check size={19}/>10 / 10</span></div><code data-at="6400" hidden>src/app.tsx</code></div>
+  </div>
+  <div class="live-terminal" data-at="2800" hidden dir="ltr"><header><Terminal size={18}/>Computer</header><code>$ pnpm test</code><code data-at="5700" hidden>✓ UI 10 / 10</code><code data-at="9600" hidden>✓ API 18 / 18</code><code data-at="10500" hidden>✓ 28 / 28</code></div>
+  <p class="process-note" data-at="11200" hidden>{steps[1]}</p>
+ </>}
+</div>

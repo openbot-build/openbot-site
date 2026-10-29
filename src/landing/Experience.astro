@@ -1,0 +1,168 @@
+---
+import { ArrowUpRight, MessagesSquare, Globe, RotateCcw, ArrowUp, LoaderCircle, History, Paperclip, Headphones, Store, GraduationCap, MapPin, House, BriefcaseBusiness, Code, Blocks } from "@lucide/astro"
+import ProductExperience from "./ProductExperience.astro"
+import ScenarioProcess from "./ScenarioProcess.astro"
+import ScenarioResult from "./ScenarioResult.astro"
+import type { Messages } from "./messages/types.ts"
+interface Props { m: Messages; developerPath: string }
+const { m, developerPath } = Astro.props
+// These paths use connected Apps, Channels, sharing, triggers, and delegation.
+const kinds = ["channel", "purchase", "share", "calendar", "schedule", "crm", "computer"]
+const durations = [9200, 10400, 6800, 11800, 8500, 11000, 12500]
+const stories = m.applications.map((story, i) => ({ ...story, kind: kinds[i] }))
+const icons = [Headphones, Store, GraduationCap, MapPin, House, BriefcaseBusiness, Code]
+const first = stories[0]!
+---
+<main class="experience">
+  <section class="product-hero wrap">
+    <h1><span>{m.hero.title[0]}</span><span class="muted">{m.hero.title[1]}</span></h1>
+    <div class="story-selector" role="group" aria-label={m.product.title}>
+      {stories.map((story, index) => {
+        const Icon = icons[index]!
+        return <button type="button" data-story={index} aria-pressed={index === 0 ? "true" : "false"}><Icon size={19} aria-hidden="true"/><span>{story.title}</span></button>
+      })}
+    </div>
+    <div class="task-demo workspace-preview chat-demo" data-demo data-state="ready">
+      <script type="application/json" data-story-data set:html={JSON.stringify(stories).replace(/</g, "\\u003c")} />
+      {stories.map((story, index) => <template data-story-template>
+        <div class="demo-task"><p>{story.task}</p></div>
+        <ScenarioProcess kind={story.kind!} steps={story.steps} title={story.title}/>
+        <section data-result data-at={durations[index]} hidden><ScenarioResult kind={story.kind!} outcome={story.outcome}/></section>
+      </template>)}
+      <aside class="chat-sidebar" aria-hidden="true">
+        <span class="wordmark"><img class="brand-logo" src="/OB.svg" width="40" height="40" alt="" />OpenBot</span>
+        <div class="preview-tools"><MessagesSquare/><Blocks/><History/></div>
+        <div class="chat-topic"><MessagesSquare size={18}/><span data-story-title>{first.title}</span></div>
+      </aside>
+      <div class="preview-main chat-main">
+        <header class="demo-header"><span data-story-title>{first.title}</span><button class="replay-button" data-reset hidden type="button"><RotateCcw size={18} aria-hidden="true"/>{m.demo.reset}</button></header>
+        <p class="demo-announcement" role="status" aria-live="polite" data-announcement></p>
+        <div class="chat-log" data-chat-log role="region" aria-label={first.title} tabindex="0"><div class="chat-welcome"><h2>{m.product.title}</h2></div></div>
+        <div class="preview-composer chat-composer">
+          <p data-composer-task>{first.task}</p>
+          <p data-composer-status hidden aria-hidden="true" data-progress={m.product.progress} data-complete={m.product.results}>{m.product.progress}</p>
+          <div><Paperclip size={20} aria-hidden="true"/><button class="button demo-start" data-start type="button" aria-label={m.demo.send}><ArrowUp size={18} stroke-width={2.5} aria-hidden="true"/></button><LoaderCircle data-composer-working hidden size={20} aria-hidden="true"/></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <ProductExperience m={m}/>
+  <section id="availability" class="wrap availability-section">
+    <div class="cloud-surface"><div><Globe size={52} stroke-width={1.25} aria-hidden="true"/><h2>{m.product.online}</h2></div><p class="coming-soon">{m.product.soon}</p></div>
+  </section>
+  <section class="wrap developer-entry"><h2>{m.license.tagline}</h2><a class="button" href={developerPath}>{m.product.developers}<ArrowUpRight size={20} aria-hidden="true"/></a></section>
+</main>
+<script>
+ const demo = document.querySelector<HTMLElement>('[data-demo]')
+ if (demo) {
+  const start = demo.querySelector<HTMLButtonElement>('[data-start]')!
+  const reset = demo.querySelector<HTMLButtonElement>('[data-reset]')!
+  const chatLog = demo.querySelector<HTMLElement>('[data-chat-log]')!
+  const announcement = demo.querySelector<HTMLElement>('[data-announcement]')!
+  const composerTask = demo.querySelector<HTMLElement>('[data-composer-task]')!
+  const composerStatus = demo.querySelector<HTMLElement>('[data-composer-status]')!
+  const composerWorking = demo.querySelector<HTMLElement>('[data-composer-working]')!
+  const templates = [...demo.querySelectorAll<HTMLTemplateElement>('[data-story-template]')]
+  const welcome = chatLog.firstElementChild!.cloneNode(true)
+  const stories: { title: string; task: string }[] = JSON.parse(demo.querySelector('[data-story-data]')!.textContent!)
+  const selectors = [...document.querySelectorAll<HTMLButtonElement>('[data-story]')]
+  let selected = 0
+  let follow = true
+  let timer: ReturnType<typeof setTimeout> | undefined
+  let pending: (() => void) | undefined
+  let remaining = 0
+  let due = 0
+  chatLog.addEventListener('scroll', () => {
+   follow = chatLog.scrollHeight - chatLog.scrollTop - chatLog.clientHeight < 12
+  })
+  function followConversation() {
+   if (follow) requestAnimationFrame(() => { chatLog.scrollTop = chatLog.scrollHeight })
+  }
+  const arm = () => {
+   if (!pending || document.hidden) return
+   due = performance.now() + remaining
+   timer = setTimeout(() => {
+    timer = undefined
+    const action = pending
+    pending = undefined
+    action?.()
+   }, remaining)
+  }
+  const schedule = (action: () => void, delay: number) => {
+   pending = action
+   remaining = delay
+   arm()
+  }
+  document.addEventListener('visibilitychange', () => {
+   if (document.hidden && timer !== undefined) {
+    clearTimeout(timer)
+    timer = undefined
+    remaining = Math.max(0, due - performance.now())
+   } else if (!document.hidden) arm()
+  })
+  function resetDemo(focus = true) {
+   clearTimeout(timer)
+   timer = undefined
+   pending = undefined
+   demo!.dataset.state = 'ready'
+   chatLog.replaceChildren(welcome.cloneNode(true))
+   chatLog.scrollTop = 0
+   follow = true
+   composerTask.hidden = false
+   composerStatus.hidden = true
+   composerWorking.hidden = true
+   start.hidden = false
+   reset.hidden = true
+   announcement.textContent = ''
+   if (focus) start.focus({ preventScroll: true })
+  }
+  selectors.forEach((button, index) => button.addEventListener('click', () => {
+   if (selected === index) return
+   selected = index
+   resetDemo(false)
+   selectors.forEach((el, i) => el.setAttribute('aria-pressed', String(i === index)))
+   const story = stories[index]!
+   demo.querySelectorAll('[data-story-title]').forEach(el => { el.textContent = story.title })
+   chatLog.setAttribute('aria-label', story.title)
+   composerTask.textContent = story.task
+  }))
+  start.addEventListener('click', () => {
+   if (demo.dataset.state !== 'ready') return
+   demo.dataset.state = 'running'
+   follow = true
+   chatLog.replaceChildren(templates[selected]!.content.cloneNode(true))
+   chatLog.querySelectorAll('[data-timezone]').forEach(el => { el.textContent = Intl.DateTimeFormat().resolvedOptions().timeZone })
+   composerTask.hidden = true
+   composerStatus.hidden = false
+   composerStatus.textContent = composerStatus.dataset.progress!
+   composerWorking.hidden = false
+   start.hidden = true
+   reset.hidden = false
+   reset.focus({ preventScroll: true })
+   // Only the playback clock is shared. Each scene owns its cues and layout.
+   const reveals = [...chatLog.querySelectorAll<HTMLElement>('[data-at]')]
+   const exits = [...chatLog.querySelectorAll<HTMLElement>('[data-until]')]
+   const times = [...new Set([...reveals.map(el => Number(el.dataset.at)), ...exits.map(el => Number(el.dataset.until))])].sort((a,b) => a-b)
+   function playCue(index: number) {
+    const time = times[index]!
+    exits.filter(el => Number(el.dataset.until) === time).forEach(el => { el.hidden = true })
+    reveals.filter(el => Number(el.dataset.at) === time).forEach(el => {
+     el.hidden = false
+     const text = el.matches('p') ? el.textContent : el.querySelector('p')?.textContent
+     if (text) announcement.textContent = text
+    })
+    followConversation()
+    const next = times[index + 1]
+    if (next !== undefined) schedule(() => playCue(index + 1), next - time)
+    else {
+     demo!.dataset.state = 'complete'
+     composerStatus.textContent = composerStatus.dataset.complete!
+     composerWorking.hidden = true
+    }
+   }
+   followConversation()
+   schedule(() => playCue(0), times[0]!)
+  })
+  reset.addEventListener('click', () => resetDemo())
+ }
+</script>

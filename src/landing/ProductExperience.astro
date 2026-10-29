@@ -1,0 +1,74 @@
+---
+import { ArrowRight, CalendarDays, Check, CheckCheck, Clock3, GraduationCap, KeyRound, Link, LockKeyhole, Mail, MessagesSquare, Package, Plug, Send, Store, BriefcaseBusiness } from "@lucide/astro"
+import type { Messages } from "./messages/types.ts"
+interface Props { m: Messages }
+const { m } = Astro.props
+const examples = [m.applications[1]!,m.applications[3]!,m.applications[5]!]
+const icons = [Store,CalendarDays,BriefcaseBusiness]
+---
+<section class="wrap tools-experience" data-tools-experience>
+ <h2>{m.experienceSections[0]}</h2>
+ <div class="tools-layout">
+  <div class="tools-choices" role="tablist" aria-label={m.experienceSections[0]}>
+   {examples.map((item,i)=>{const Icon=icons[i]!;return <button type="button" role="tab" id={`tool-choice-${i}`} aria-controls={`tool-view-${i}`} aria-selected={i===0?'true':'false'} tabindex={i===0?0:-1} data-tool-choice><Icon size={27}/><span>{item.title}</span><ArrowRight size={22}/></button>})}
+  </div>
+  <div class="tool-stage">
+   <div class="business-surface" role="tabpanel" tabindex="0" id="tool-view-0" aria-labelledby="tool-choice-0" data-tool-view>
+    <header><Package size={25}/><strong>PO-203</strong><Check size={22}/></header>
+    <div class="order-document"><span>SKU-203</span><strong>12<span>×</span></strong><div class="quantity-equation" dir="ltr">20 − 8 = 12</div></div>
+    <p>{examples[0].steps[1]}</p>
+    <div class="tool-delivery"><MessagesSquare size={22}/><strong>Lark</strong><span>PO-203</span><CheckCheck size={21}/></div>
+   </div>
+   <div class="business-calendar" role="tabpanel" tabindex="0" id="tool-view-1" aria-labelledby="tool-choice-1" data-tool-view hidden>
+    <header><CalendarDays size={25}/><strong>Roma</strong><span>03</span></header>
+    <div class="calendar-columns" dir="ltr">{[['01','10:00','Colosseo'],['02','10:30','Pantheon'],['03','10:00','Villa Borghese']].map(([day,time,place])=><div><strong>{day}</strong><article><time>{time}</time><span>{place}</span><Check size={18}/></article><div class="calendar-pause"><Clock3 size={18}/><time>13:00–16:00</time></div></div>)}</div>
+    <p>{examples[1].steps[1]}</p><div class="tool-delivery"><Send size={21}/><strong>Telegram</strong><CheckCheck size={21}/></div>
+   </div>
+   <div class="business-crm" role="tabpanel" tabindex="0" id="tool-view-2" aria-labelledby="tool-choice-2" data-tool-view hidden>
+    <header><BriefcaseBusiness size={25}/><strong>OPP-204</strong><Check size={22}/></header>
+    <h3>Alex Chen</h3><p>{examples[2].steps[1]}</p>
+    <div class="meeting-entry"><CalendarDays size={26}/><strong>10:00 — 10:30</strong></div>
+    <div class="tool-delivery"><Mail size={23}/><strong>Alex Chen</strong><CheckCheck size={21}/></div>
+   </div>
+  </div>
+ </div>
+</section>
+<section class="background-experience"><div class="wrap background-layout">
+ <div><h2>{m.experienceSections[1]}</h2><p class="background-task">{m.applications[4]!.task}</p><div class="background-destination"><Send size={25}/>Telegram</div></div>
+ <div class="scheduled-work">
+  <div class="schedule-heading"><Clock3 size={24}/><h3>{m.applications[4]!.title}</h3></div>
+  <ol class="schedule-list">{[Plug,Package,KeyRound].map((Icon,i)=><li><span class="schedule-point"><Icon size={24}/></span><strong dir="ltr">{['D − 7','D − 3','D'][i]}</strong><time>09:00</time><Clock3 size={18}/></li>)}</ol>
+  <p>{m.applications[4]!.outcome}</p>
+ </div>
+</div></section>
+<section class="wrap shared-experience">
+ <h2>{m.experienceSections[2]}</h2>
+ <div class="shared-layout">
+  <div class="shared-source"><GraduationCap size={38}/><h3>{m.applications[2]!.title}</h3><p>{m.experienceSections[3]}</p></div>
+  <div class="shared-bridge" aria-hidden="true"><Link size={28}/></div>
+  <div class="personal-spaces">
+   {['Mia','Leo'].map(name=><div class="personal-space"><header><strong>{name}</strong><LockKeyhole size={22}/></header><div class="personal-tools"><GraduationCap size={27}/><CalendarDays size={24}/><Mail size={24}/></div><p>{m.experienceSections[4]}</p></div>)}
+  </div>
+ </div>
+ <p class="sharing-outcome">{m.applications[2]!.outcome}</p>
+</section>
+<script>
+ const tools = document.querySelector('[data-tools-experience]')
+ if (tools) {
+  const choices = [...tools.querySelectorAll<HTMLButtonElement>('[data-tool-choice]')]
+  const views = [...tools.querySelectorAll<HTMLElement>('[data-tool-view]')]
+  function select(index:number, focus=false) {
+   choices.forEach((choice,i)=>{choice.setAttribute('aria-selected',String(i===index));choice.tabIndex=i===index?0:-1;views[i]!.hidden=i!==index})
+   if(focus) choices[index]!.focus({preventScroll:true})
+  }
+  choices.forEach((choice,i)=>{
+   choice.addEventListener('click',()=>select(i))
+   choice.addEventListener('keydown',event=>{
+    if(!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End'].includes(event.key)) return
+    event.preventDefault()
+    const forward=document.documentElement.dir==='rtl'?'ArrowLeft':'ArrowRight'
+    select(event.key==='Home'?0:event.key==='End'?choices.length-1:(i+([forward,'ArrowDown'].includes(event.key)?1:-1)+choices.length)%choices.length,true)
+   })
+  })
+ }
+</script>

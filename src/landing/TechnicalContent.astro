@@ -1,0 +1,94 @@
+---
+import { ArrowUpRight, ArrowRight, MessagesSquare, Blocks, Terminal, FileJson, Folder, GitBranch, Radio, Server, ShieldCheck, RotateCcw } from "@lucide/astro"
+import type { Messages } from "./messages/types.ts"
+import { docsUrl } from "../links.ts"
+interface Props { m: Messages; docs: string }
+const { m, docs } = Astro.props
+const request = `curl https://api.example.com/v1/bots/$BOT/messages \\\n  -H "Authorization: Bearer $OPENBOT_TOKEN" \\\n  -H "Content-Type: application/json" \\\n  --data-binary @- <<'JSON'
+${JSON.stringify({input:m.hero.prompt,commandKey:"trip-1"})}
+JSON`
+const receipt = JSON.stringify({executionId:"<executionId>",commandKey:"trip-1",sequence:2,chat:"<chatId>",turn:"<turnId>"}, null, 2)
+const observe = `curl -N \\\n  -H "Authorization: Bearer $OPENBOT_TOKEN" \\\n  "https://api.example.com/v1/executions/$EXECUTION_ID/observe?afterSequence=0"`
+const catalog = JSON.stringify({specVersion:"1.0", entries:[{identifier:"urn:air:apps.example.com:mcp:calendar",type:"application/mcp-server-card+json",url:"https://apps.example.com/mcp/calendar/server-card"}]},null,2)
+const panels = [{label:"POST /messages",code:request},{label:"202 Accepted",code:receipt},{label:"SSE /observe",code:observe}]
+const local = `git clone https://github.com/openbot-build/openbot.git
+cd openbot
+devenv shell -- pnpm dev:setup
+devenv shell -- pnpm dev`
+---
+<main class="technical-page developer-redesign">
+ <section class="wrap dev-intro">
+  <h1><span>{m.contract.title[0]}</span><span class="muted">{m.contract.title[1]}</span></h1>
+  <div class="dev-intro-links"><a class="button" href={`${docs}developers/quickstart/`}>{m.hero.quickStart}<ArrowUpRight size={20}/></a><a class="dev-link" href={docsUrl('/api/')}>{m.hero.apiReference}<ArrowUpRight size={19}/></a></div>
+  <div class="api-workbench" data-api-workbench>
+   <div class="api-tabs" role="tablist" aria-label={m.hero.apiReference}>
+    {panels.map((panel,i)=><button type="button" role="tab" id={`api-tab-${i}`} aria-controls={`api-panel-${i}`} aria-selected={i===0?'true':'false'} tabindex={i===0?0:-1} data-api-tab={i}><span>0{i+1}</span>{panel.label}</button>)}
+   </div>
+   <div class="api-editor">{panels.map((panel,i)=><div role="tabpanel" id={`api-panel-${i}`} aria-labelledby={`api-tab-${i}`} hidden={i!==0} tabindex="0" data-api-panel><pre dir="ltr"><code>{panel.code}</code></pre></div>)}</div>
+  </div>
+  <div class="contract-line" dir="ltr"><code>@openbot-build/api</code><ArrowRight size={20}/><span>HTTP API</span><span>TypeScript</span><span>OpenAPI</span></div>
+ </section>
+ <section class="wrap dev-apps">
+  <div class="dev-section-intro"><Blocks size={32}/><h2>{m.developerSections[0]}</h2><a class="dev-link" href={`${docs}protocol/`}>{m.linkLabels.apps}<ArrowUpRight size={19}/></a></div>
+  <div class="app-package">
+   <div class="app-file-tree" dir="ltr"><span><Folder size={21}/>apps.example.com</span><span><FileJson size={19}/>.well-known/ai-catalog.json</span><span><FileJson size={19}/>mcp/calendar/server-card</span><span><Radio size={19}/>mcp/calendar</span></div>
+   <pre dir="ltr" tabindex="0"><code>{catalog}</code></pre>
+   <div class="app-standards">{m.diagram.appFlow.map((text,i)=><>{i>0 && <ArrowRight size={17}/>}<span>{text}</span></>)}</div>
+  </div>
+ </section>
+ <section class="wrap dev-channels">
+  <h2>{m.developerSections[1]}</h2>
+  <div class="channel-architecture">
+   <div class="channel-origins">{['Slack','Lark','Telegram'].map(name=><span><MessagesSquare size={21}/>{name}</span>)}</div>
+   <ArrowRight class="architecture-arrow" size={26}/>
+   <div class="channel-gateway"><ShieldCheck size={30}/><strong>Channel</strong><p>{m.diagram.verify}</p></div>
+   <ArrowRight class="architecture-arrow" size={26}/>
+   <div class="channel-actor"><strong>Bot</strong><p>{m.diagram.work}</p></div>
+  </div>
+  <div class="channel-return"><RotateCcw size={21}/><p>{m.diagram.return}</p><a class="dev-link" href={`${docs}developers/channels/`}>{m.linkLabels.channels}<ArrowUpRight size={19}/></a></div>
+ </section>
+ <section class="dev-runtime"><div class="wrap runtime-layout">
+  <div class="dev-section-intro"><GitBranch size={32}/><h2>{m.developerSections[2]}</h2><a class="dev-link" href={`${docs}developers/delegation/`}>{m.linkLabels.delegation}<ArrowUpRight size={19}/></a></div>
+  <div class="execution-map">
+   <div class="execution-main"><span>{m.diagram.message}</span><ArrowRight size={19}/><span>{m.diagram.work}</span><ArrowRight size={19}/><span>{m.diagram.reply}</span></div>
+   <div class="execution-branches"><p>{m.diagram.parallel}</p><div><GitBranch size={21}/><span>01</span><span>{m.diagram.work}</span><ArrowRight size={19}/><span>{m.diagram.reply}</span></div><div><GitBranch size={21}/><span>02</span><span>{m.diagram.work}</span><ArrowRight size={19}/><span>{m.diagram.reply}</span></div></div>
+   <div class="execution-reconnect"><Radio size={21}/><p>{m.diagram.resume}</p></div>
+   <a class="dev-link" href={`${docs}developers/chats/`}>{m.linkLabels.chats}<ArrowUpRight size={19}/></a>
+  </div>
+ </div></section>
+ <section class="wrap dev-deploy">
+  <h2>{m.developerSections[3]}</h2>
+  <div class="deploy-layout">
+   <div class="local-terminal"><header><Terminal size={22}/><span>{m.closing.steps[0].title}</span></header><pre dir="ltr" tabindex="0"><code>{local}</code></pre><a class="dev-link" href={`${docs}developers/quickstart/`}>{m.hero.quickStart}<ArrowUpRight size={19}/></a></div>
+   <div class="deployment-stack"><Server size={35}/><strong>OpenBot</strong><div><span>PostgreSQL</span><span>S3</span><span>OIDC</span></div><a class="dev-link" href={`${docs}deploy/`}>{m.linkLabels.deploy}<ArrowUpRight size={19}/></a><a class="dev-link" href={`${docs}developers/model-backends/`}>{m.linkLabels.models}<ArrowUpRight size={19}/></a></div>
+  </div>
+  <div class="repository-index">
+   <a href="https://github.com/openbot-build/openbot"><span>OpenBot {m.linkLabels.source}</span><code>AGPL-3.0-only</code><ArrowUpRight size={22}/></a>
+   <a href="https://github.com/openbot-build/openbot-ui"><span>OpenBot UI {m.linkLabels.source}</span><code>MIT</code><ArrowUpRight size={22}/></a>
+   <div><span>Cloud</span><span>{m.product.soon}</span></div>
+  </div>
+ </section>
+</main>
+<script>
+ const workbench = document.querySelector('[data-api-workbench]')
+ if (workbench) {
+  const tabs = [...workbench.querySelectorAll<HTMLButtonElement>('[data-api-tab]')]
+  const panels = [...workbench.querySelectorAll<HTMLElement>('[data-api-panel]')]
+  function select(index: number, focus = false) {
+   tabs.forEach((tab,i) => { tab.setAttribute('aria-selected', String(i===index)); tab.tabIndex = i===index ? 0 : -1; panels[i]!.hidden = i!==index })
+   if (focus) tabs[index]!.focus({preventScroll:true})
+  }
+  tabs.forEach((tab,index) => {
+   tab.addEventListener('click', () => select(index))
+   tab.addEventListener('keydown', event => {
+    const vertical = ['ArrowDown','ArrowUp']
+    const rtl = document.documentElement.dir === 'rtl'
+    const forward = rtl ? 'ArrowLeft' : 'ArrowRight'
+    if (['ArrowRight','ArrowLeft',...vertical,'Home','End'].includes(event.key)) {
+     event.preventDefault()
+     select(event.key==='Home'?0:event.key==='End'?tabs.length-1:(index+([forward,'ArrowDown'].includes(event.key)?1:-1)+tabs.length)%tabs.length,true)
+    }
+   })
+  })
+ }
+</script>

@@ -1,6 +1,103 @@
 import type { Messages } from "./types.ts"
 
 export default {
+ experienceSections: ["Ana yin aiki a kayan aikinka.", "Aiki yana ci gaba bayan hira.", "Raba hanyar aikinka.", "Matsayi da hanya ɗaya", "Asusunka da bayananka"],
+ diagram: {"verify": "Tabbatar da tushe da wanda ya aika", "return": "Mayar da sakamako zuwa tattaunawar asali", "parallel": "Ayyuka suna gudana dabam suna dawo da sakamako nan", "resume": "Sake haɗawa daga abin da aka karɓa na ƙarshe", "message": "Aika saƙo", "work": "Gudanar da aiki", "reply": "Karɓi amsa", "appFlow": ["Nemo sabis", "Karanta saitunan haɗi", "Yi amfani da kayan aiki da fuska"]},
+	linkLabels: {"deploy": "Jagorar girkawa", "apps": "Ƙa'idodin wallafa App", "channels": "Jagorar haɗa tashoshi", "delegation": "Jagorar wakilta ayyuka", "chats": "Jagorar hira da jerin abubuwan da suka faru", "models": "Faɗaɗa bayanan tsarin samfur", "source": "Lambar tushe"},
+	developerSections: ["Wallafa wata dama.", "Haɗa inda mutane suke aiki.", "Bari dogayen ayyuka su ci gaba.", "Gudanar a kan tsarin ka."],
+	applications: [
+	  {
+	    "title": "Tallafin abokan ciniki",
+	    "task": "Yi aiki da tikiti a Slack ta App tallafi na, ka rarraba masu gaggawa.",
+	    "steps": [
+	      "Karanta tikiti 12; gano 3 na gaggawa.",
+	      "Miƙa ga injiniyoyi kuma sabunta tikiti."
+	    ],
+	    "outcome": "Masu aiki da mataki na gaba sun koma asalin zancen #support."
+	  },
+	  {
+	    "title": "Aikin shago",
+	    "task": "Cika SKU-203 ta App ajiya da saye, ka sanar da ƙungiyar Lark.",
+	    "steps": [
+	      "Duba ajiya da lokacin kaya: an rasa 12.",
+	      "Ƙirƙiri odar gaggawa PO-203 ta kaya 12."
+	    ],
+	    "outcome": "An ajiye oda, an aika lambarta zuwa Lark don bi diddigi."
+	  },
+	  {
+	    "title": "Raba Bot koyarwa",
+	    "task": "Raba Bot darasina da wani malami don kayansa da asusunsa.",
+	    "steps": [
+	      "Riƙe aikin malami da umarnin Bot.",
+	      "Ƙirƙiri gayyatar imel ga teacher@example.com."
+	    ],
+	    "outcome": "Bayan karɓa malamin yana da Bot haɗe da App nasa. Chat ɗinmu sun bambanta."
+	  },
+	  {
+	    "title": "Tafiyar iyali",
+	    "task": "Yi amfani da abubuwan da aka tuna da ajiyar tafiya don kalandar Roma da Telegram.",
+	    "steps": [
+	      "Tuna tafiya a hankali da hutu; karanta ajiyar tafiya.",
+	      "Saka kwanaki uku ta App kalanda da aka haɗa."
+	    ],
+	    "outcome": "An sabunta kalanda, an aika shiri zuwa Telegram inda za a iya gyarawa."
+	  },
+	  {
+	    "title": "Mai kula da ƙaura",
+	    "task": "Shirya ƙaurata mako mai zuwa, ka tunatar ta Telegram bisa yankin lokacina.",
+	    "steps": [
+	      "Ƙirƙiri ayyukan sabis, kaya da miƙa maɓalli.",
+	      "Saita farawa sau ɗaya kwana 7 kafin, kwana 3 kafin da ranar ƙaura."
+	    ],
+	    "outcome": "An tsara tunatarwa uku; kowanne zai fara aiki ya aika labari zuwa Telegram."
+	  },
+	  {
+	    "title": "Bin ciniki",
+	    "task": "Bi OPP-204 ta App CRM da kalandata bayan taro.",
+	    "steps": [
+	      "Karanta bayanin taro da damar ciniki.",
+	      "Sabunta mataki na gaba a CRM da sanya taron gaba."
+	    ],
+	    "outcome": "OPP-204 na da aiki da lokaci; an aika imel ga abokin ciniki ta App wasiƙa."
+	  },
+	  {
+	    "title": "Shirya fitarwa",
+	    "task": "Ba Bots biyu gwajin API da UI a Computer gwaji.",
+	    "steps": [
+	      "Raba ayyuka biyu; wannan Chat yana nan.",
+	      "Gudanar da gwaji da tattara sakamako da fayiloli."
+	    ],
+	    "outcome": "Ayyukan sun dawo: gwaji 28 sun wuce, fayiloli 2 sun canza. An shirya dubawa."
+	  }
+	],
+	demo: {
+		"send": "Aika",
+	  "label": "Gwaji mai hulɗa",
+	  "task": "Duba tikitin tallafi 12, shirya rahoto ka aika wa ƙungiya.",
+	  "read": "An karanta tikiti 12",
+	  "grouped": "An raba zuwa batutuwa 3",
+	  "report": "Rahoton tallafi",
+
+	  "sent": "An aika imel",
+	  "reset": "Sake gwadawa",
+	  "download": "Sauke rahoto",
+	  "categories": [
+	    "Shiga",
+	    "Biyan kuɗi",
+	    "Fitarwa"
+	  ]
+	},
+	product: {
+		online: "Amfani ta intanet",
+		progress: "Bi aikin",
+		results: "Samu sakamakon",
+
+	  "title": "Daga tunani zuwa aiki.",
+	  "ui": "Daga tunani zuwa aiki.",
+	  "core": "Wakilai masu aiki.",
+	  "developers": "Ga masu haɓakawa",
+	  "soon": "Yana zuwa nan ba da jimawa ba"
+	},
 	description: "Dandalin Bot marar fuska, wanda ke aiki ta API.",
 	nav: {
 		label: "Shafi",
@@ -9,7 +106,7 @@ export default {
 		language: "Harshe",
 	},
 	hero: {
-		title: ["Bot da za ka iya kira.", "Sakamako da za ka iya dubawa."],
+		title: ["Wakilanka.", "Dokokinka."],
 		body: "OpenBot dandalin Bot ne na buɗaɗɗen tushe, ba shi da fuskar mai amfani. Kana ba Bot aiki ta HTTP.",
 		quickStart: "Fara da sauri",
 		apiReference: "Bayanin API",
@@ -85,6 +182,7 @@ export default {
 		],
 	},
 	license: {
+		tagline: "An gina shi a buɗe.",
 		label: "Lasisi",
 		body: "OpenBot manhaja ce ta 'yanci ƙarƙashin AGPL-3.0-only. Za ka iya karanta lambar, canza ta, kuma ka gudanar da ita a sabobinka.",
 		link: "Karanta lambar",

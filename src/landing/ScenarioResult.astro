@@ -1,0 +1,57 @@
+---
+import { ArrowRight, Check, Clock3, CalendarDays, Mail, MessagesSquare, Package, Users, Link, GitBranch, CheckCheck, Terminal, Send, CircleDot } from "@lucide/astro"
+interface Props { kind: string; outcome: string }
+const { kind, outcome } = Astro.props
+---
+<article class:list={["scenario-result", `result-${kind}`]} data-receipt={kind}>
+  {kind === "channel" && <>
+    <header><MessagesSquare size={22}/><strong>Slack · #support</strong><CheckCheck size={20}/></header>
+    <div class="channel-thread">
+      <span class="thread-author">OpenBot</span>
+      <div class="ticket-routing" dir="ltr">
+        {[['#1041', 'Mia', 'API'], ['#1044', 'Leo', 'UI'], ['#1047', 'Mia', 'API']].map(([id, owner, team]) => <div><span>{id}</span><span class="receipt-tag">P1</span><ArrowRight size={16}/><strong>{owner} · {team}</strong><Check size={17}/></div>)}
+      </div>
+      <p>{outcome}</p>
+    </div>
+  </>}
+  {kind === "purchase" && <>
+    <header><Package size={22}/><strong>PO-203</strong><Check size={20}/></header>
+    <div class="purchase-line" dir="ltr"><span>SKU-203</span><strong>× 12</strong></div>
+    <div class="receipt-route"><span><Package size={19}/>PO-203</span><ArrowRight size={18}/><span><MessagesSquare size={19}/>Lark</span></div>
+    <p>{outcome}</p>
+  </>}
+  {kind === "share" && <>
+    <header><Users size={22}/><strong>Share Bot</strong><Mail size={20}/></header>
+    <div class="share-connection"><span><Link size={28}/>Bot</span><ArrowRight size={22}/><span><Mail size={28}/><bdi>teacher@example.com</bdi><Clock3 size={18}/></span></div>
+    <p>{outcome}</p>
+  </>}
+  {kind === "calendar" && <>
+    <header><CalendarDays size={22}/><strong>Roma</strong><Check size={20}/></header>
+    <div class="itinerary" dir="ltr">
+      {[['01', '10:00', 'Colosseo'], ['02', '10:30', 'Pantheon'], ['03', '10:00', 'Villa Borghese']].map(([day, time, place]) => <div><strong>{day}</strong><time>{time}</time><span>{place}</span><Check size={16}/></div>)}
+    </div>
+    <div class="receipt-route"><CalendarDays size={20}/><ArrowRight size={18}/><span><Send size={18}/>Telegram</span></div>
+    <p>{outcome}</p>
+  </>}
+  {kind === "schedule" && <>
+    <header><Clock3 size={22}/><strong>Telegram</strong><Send size={20}/></header>
+    <div class="reminder-timeline" dir="ltr">{['D − 7', 'D − 3', 'D'].map(day => <div><Clock3 size={23}/><strong>{day}</strong><time>09:00</time></div>)}</div>
+    <div class="timezone" data-timezone></div>
+    <p>{outcome}</p>
+  </>}
+  {kind === "crm" && <>
+    <header><CircleDot size={22}/><strong>OPP-204</strong><Check size={20}/></header>
+    <div class="crm-actions">
+      <div><CircleDot size={20}/><span>CRM · OPP-204</span><Check size={18}/></div>
+      <div><CalendarDays size={20}/><span>10:00 — 10:30</span><Check size={18}/></div>
+      <div><Mail size={20}/><span>Mail → Alex Chen</span><CheckCheck size={18}/></div>
+    </div>
+    <p>{outcome}</p>
+  </>}
+  {kind === "computer" && <>
+    <header><GitBranch size={22}/><strong>release/1.8</strong><Check size={20}/></header>
+    <div class="delegated-tasks" dir="ltr"><span><Check size={19}/>API · 18/18</span><span><Check size={19}/>UI · 10/10</span></div>
+    <div class="computer-output" dir="ltr"><span><Terminal size={18}/>Computer</span><code>$ pnpm test<br/>✓ 28 / 28</code><code> M src/api.ts<br/> M src/app.tsx</code></div>
+    <p>{outcome}</p>
+  </>}
+</article>

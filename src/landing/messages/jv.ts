@@ -1,6 +1,103 @@
 import type { Messages } from "./types.ts"
 
 export default {
+ experienceSections: ["Gawe rampung ing piranti sampeyan.", "Gawe terus sanajan metu saka obrolan.", "Bagekna cara nyambut gawe sampeyan.", "Peran lan cara bebarengan", "Akun lan data dhewe"],
+ diagram: {"verify": "Priksa sumber lan kenali pangirim", "return": "Kirim asil menyang obrolan asline", "parallel": "Tugas mlaku dhewe lan mbalekake asil menyang obrolan iki", "resume": "Sambung maneh saka kedadeyan pungkasan sing ditampa", "message": "Kirim pesen", "work": "Proses tugas", "reply": "Tampa wangsulan", "appFlow": ["Golek layanan", "Waca konfigurasi", "Gunakake alat lan tampilan"]},
+	linkLabels: {"deploy": "Pandhuan deployment", "apps": "Spesifikasi nerbitake App", "channels": "Pandhuan integrasi kanal", "delegation": "Pandhuan delegasi tugas", "chats": "Pandhuan obrolan lan aliran kedadeyan", "models": "Ngembangake backend model", "source": "Kode sumber"},
+	developerSections: ["Terbitake kemampuan.", "Sambung ing papan wong nyambut gawe.", "Tugas dawa tetep mlaku.", "Jalakna ing infrastruktur dhewe."],
+	applications: [
+	  {
+	    "title": "Layanan pelanggan",
+	    "task": "Tangani tiket ing Slack nganggo App pitulungan sing disambungake lan terusake sing mendesak.",
+	    "steps": [
+	      "Waca 12 tiket; temokake 3 sing mendesak.",
+	      "Tugasake menyang teknisi lan anyarake tiket."
+	    ],
+	    "outcome": "Penanggung jawab lan langkah sabanjure dikirim menyang utas #support asli."
+	  },
+	  {
+	    "title": "Operasi toko",
+	    "task": "Isi SKU-203 nganggo App stok lan tuku, kabari grup Lark.",
+	    "steps": [
+	      "Priksa stok lan wektu kirim: kurang 12 barang.",
+	      "Gawe pesenan cepet PO-203 kanggo 12 barang."
+	    ],
+	    "outcome": "Pesenan kacathet lan nomere dikirim menyang Lark kanggo diterusake."
+	  },
+	  {
+	    "title": "Bot guru bareng",
+	    "task": "Bagekake Bot piwulangku marang guru liya kanggo bahan lan akune dhewe.",
+	    "steps": [
+	      "Tetepake peran lan pandhuan mulang.",
+	      "Gawe undhangan email kanggo teacher@example.com."
+	    ],
+	    "outcome": "Sawise nampa, guru nggunakake Bot sambungan lan App dhewe. Chat tetep kapisah."
+	  },
+	  {
+	    "title": "Lelungan kulawarga",
+	    "task": "Gunakake pilihan sing dielingi lan pesenan kanggo jadwal Roma ing kalender lan Telegram.",
+	    "steps": [
+	      "Elingi lelungan alon lan leren; waca pesenan.",
+	      "Tambah telung dina kegiatan nganggo App kalender."
+	    ],
+	    "outcome": "Kalender anyar lan jadwal dikirim menyang Telegram, bisa diowahi ing kana."
+	  },
+	  {
+	    "title": "Koordinator pindhah",
+	    "task": "Atur pindhahan minggu ngarep lan elingake liwat Telegram miturut zona waktuku.",
+	    "steps": [
+	      "Gawe tugas listrik banyu, ngemas lan kunci.",
+	      "Setel pemicu sepisan 7 dina sadurunge, 3 dina sadurunge lan dina pindhah."
+	    ],
+	    "outcome": "Telung pangeling wis dijadwal; saben pemicu miwiti tugas lan ngabarake Telegram."
+	  },
+	  {
+	    "title": "Tindak lanjut dodolan",
+	    "task": "Terusake OPP-204 nganggo App CRM lan kalenderku.",
+	    "steps": [
+	      "Waca cathetan rapat lan peluang.",
+	      "Anyarake langkah CRM lan jadwal patemon sabanjure."
+	    ],
+	    "outcome": "OPP-204 duwe tumindak lan jadwal; email pelanggan dikirim nganggo App surat."
+	  },
+	  {
+	    "title": "Nyiyapake rilis",
+	    "task": "Tugasake tes API lan UI marang loro Bots ing Computer tes.",
+	    "steps": [
+	      "Loro tugas kapisah; Chat iki tetep bisa digunakake.",
+	      "Jalanke tes lan kumpulake asil lan berkas."
+	    ],
+	    "outcome": "Loro tugas bali: 28 tes lulus, 2 berkas owah. Versi siap dipriksa."
+	  }
+	],
+	demo: {
+		"send": "Kirim",
+	  "label": "Demo interaktif",
+	  "task": "Priksa 12 tiket pitulungan, gawe laporan, banjur kirim menyang tim.",
+	  "read": "12 tiket wis diwaca",
+	  "grouped": "Diklompokake dadi 3 topik",
+	  "report": "Laporan pitulungan",
+
+	  "sent": "Email wis dikirim",
+	  "reset": "Baleni",
+	  "download": "Undhuh laporan",
+	  "categories": [
+	    "Mlebu",
+	    "Tagihan",
+	    "Ekspor"
+	  ]
+	},
+	product: {
+		online: "Pengalaman online",
+		progress: "Deleng kemajuane",
+		results: "Tampa asile",
+
+	  "title": "Saka gagasan dadi tumindak.",
+	  "ui": "Saka gagasan dadi tumindak.",
+	  "core": "Agen sing nyambut gawe.",
+	  "developers": "Kanggo pangembang",
+	  "soon": "Bakal teka"
+	},
 	description: "Platform Bot tanpa antarmuka, sing ngutamakake API.",
 	nav: {
 		label: "Situs",
@@ -9,7 +106,7 @@ export default {
 		language: "Basa",
 	},
 	hero: {
-		title: ["Bot sing bisa kok undang.", "Asil sing bisa kok priksa."],
+		title: ["Agenmu.", "Aturanmu."],
 		body: "OpenBot iku platform Bot open source tanpa antarmuka pangguna. Kowe menehi gawean marang Bot liwat HTTP.",
 		quickStart: "Wiwitan cepet",
 		apiReference: "Referensi API",
@@ -87,6 +184,7 @@ export default {
 		],
 	},
 	license: {
+		tagline: "Dirancang supaya mbukak.",
 		label: "Lisensi",
 		body: "OpenBot iku piranti lunak bebas miturut AGPL-3.0-only. Kowe bisa maca kode, ngowahi, lan mlakokake ing server dhewe.",
 		link: "Waca kode",

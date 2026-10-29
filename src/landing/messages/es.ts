@@ -1,6 +1,103 @@
 import type { Messages } from "./types.ts"
 
 export default {
+ experienceSections: ["El trabajo ocurre en tus herramientas.", "El trabajo continúa fuera del chat.", "Comparte tu forma de trabajar.", "Un rol y método compartidos", "Tus propias cuentas y datos"],
+ diagram: {"verify": "Verificar el origen e identificar al remitente", "return": "Enviar resultados al hilo original", "parallel": "Las tareas se ejecutan por separado y devuelven resultados a este chat", "resume": "Reconectar y continuar desde el último evento recibido", "message": "Enviar mensaje", "work": "Procesar tarea", "reply": "Recibir respuesta", "appFlow": ["Encontrar servicio", "Leer la conexión", "Usar herramientas y vistas"]},
+	linkLabels: {"deploy": "Guía de despliegue", "apps": "Especificación para publicar Apps", "channels": "Guía de integración de canales", "delegation": "Guía de delegación de tareas", "chats": "Guía de chats y flujos de eventos", "models": "Ampliar los backends de modelos", "source": "Código fuente"},
+	developerSections: ["Publica una capacidad.", "Conecta donde trabaja la gente.", "Deja que las tareas largas continúen.", "Ejecuta en tu infraestructura."],
+	applications: [
+	  {
+	    "title": "Atención al cliente",
+	    "task": "Gestiona los tickets de hoy en Slack con mi App de soporte conectada y asigna los urgentes.",
+	    "steps": [
+	      "Leer 12 tickets y detectar 3 urgencias.",
+	      "Asignar los urgentes a ingeniería y actualizar los registros."
+	    ],
+	    "outcome": "Responsables y próximos pasos publicados en el hilo original de #support."
+	  },
+	  {
+	    "title": "Operaciones de tienda",
+	    "task": "Repón SKU-203 con mis Apps de inventario y compras, y avisa al grupo de compras de Lark.",
+	    "steps": [
+	      "Revisar stock y plazo: faltan 12 unidades antes de la entrega.",
+	      "Crear el pedido urgente PO-203 de 12 unidades en la App de compras."
+	    ],
+	    "outcome": "Pedido registrado y referencia enviada a Lark para continuar el seguimiento."
+	  },
+	  {
+	    "title": "Asistente docente compartido",
+	    "task": "Comparte mi Bot de preparación de clases con otra docente para sus propios materiales y cuentas.",
+	    "steps": [
+	      "Mantener el rol docente y las instrucciones del Bot.",
+	      "Crear invitación por email para teacher@example.com."
+	    ],
+	    "outcome": "Al aceptar obtiene un Bot vinculado y usa sus Apps. Nuestros Chats siguen separados."
+	  },
+	  {
+	    "title": "Viaje familiar",
+	    "task": "Usa nuestras preferencias guardadas y reservas para organizar Roma en mi calendario y enviarlo a Telegram.",
+	    "steps": [
+	      "Recuperar el ritmo tranquilo y las pausas; leer las reservas confirmadas.",
+	      "Añadir tres días con descansos mediante la App de calendario conectada."
+	    ],
+	    "outcome": "Calendario actualizado; el itinerario llega al chat de Telegram para ajustarlo allí."
+	  },
+	  {
+	    "title": "Coordinación de mudanza",
+	    "task": "Organiza mi mudanza de la próxima semana y recuérdame cada etapa en Telegram, en mi zona horaria.",
+	    "steps": [
+	      "Crear tareas de suministros, embalaje y entrega de llaves.",
+	      "Programar activadores únicos a 7 días, 3 días y el día de la mudanza."
+	    ],
+	    "outcome": "Tres recordatorios programados; cada activador inicia su tarea y vuelve a Telegram."
+	  },
+	  {
+	    "title": "Seguimiento comercial",
+	    "task": "Da seguimiento a OPP-204 tras la reunión mediante mis Apps CRM y calendario.",
+	    "steps": [
+	      "Leer las notas y el estado actual de la oportunidad.",
+	      "Actualizar el siguiente paso del CRM y agendar la reunión de seguimiento."
+	    ],
+	    "outcome": "OPP-204 tiene acción y fecha; el email al cliente sale por la App de correo conectada."
+	  },
+	  {
+	    "title": "Preparación de lanzamiento",
+	    "task": "Encarga pruebas API y UI a dos Bots en el Computer de pruebas y trae los resultados aquí.",
+	    "steps": [
+	      "Delegar dos tareas mientras este Chat sigue disponible.",
+	      "Ejecutar pruebas en el Computer y reunir resultados y archivos."
+	    ],
+	    "outcome": "Ambas tareas regresaron: 28 pruebas superadas, 2 archivos cambiados. La versión está lista para revisión."
+	  }
+	],
+	demo: {
+		"send": "Enviar",
+	  "label": "Demo interactiva",
+	  "task": "Revisa 12 tickets, prepara un informe y envíalo al equipo.",
+	  "read": "12 tickets leídos",
+	  "grouped": "Agrupados en 3 temas",
+	  "report": "Informe de soporte",
+
+	  "sent": "Correo enviado",
+	  "reset": "Repetir",
+	  "download": "Descargar informe",
+	  "categories": [
+	    "Acceso",
+	    "Facturación",
+	    "Exportación"
+	  ]
+	},
+	product: {
+		online: "Experiencia en línea",
+		progress: "Sigue el progreso",
+		results: "Recibe el resultado",
+
+	  "title": "De la idea a la acción.",
+	  "ui": "De la idea a la acción.",
+	  "core": "Agentes que trabajan.",
+	  "developers": "Desarrolladores",
+	  "soon": "Próximamente"
+	},
 	description:
 		"Una plataforma de Bots sin interfaz y pensada primero para la API.",
 	nav: {
@@ -10,7 +107,7 @@ export default {
 		language: "Idioma",
 	},
 	hero: {
-		title: ["Bots a los que puedes llamar.", "Resultados que puedes revisar."],
+		title: ["Tus agentes.", "Tus reglas."],
 		body: "OpenBot es una plataforma de Bots de código abierto sin interfaz de usuario. Le das trabajo a un Bot por HTTP.",
 		quickStart: "Inicio rápido",
 		apiReference: "Referencia de la API",
@@ -85,6 +182,7 @@ export default {
 		],
 	},
 	license: {
+		tagline: "Abierto por diseño.",
 		label: "Licencia",
 		body: "OpenBot es software libre bajo AGPL-3.0-only. Puedes leer el código, cambiarlo y ejecutarlo en tus propios servidores.",
 		link: "Lee el código",
